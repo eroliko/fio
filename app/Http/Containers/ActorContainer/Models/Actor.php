@@ -6,13 +6,15 @@ namespace App\Http\Containers\ActorContainer\Models;
 
 use App\Http\Containers\CastTypeEnums\GeneralVarsCastEnums;
 use App\Http\Containers\MovieContainer\Models\Movie;
-use App\Http\Core\Helpers\GenderMapper;
+use App\Http\Core\Mappers\GenderMapper;
 use App\Http\Core\Models\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Collection;
 
 class Actor extends Model
 {
+    protected $table = 'actor';
+
     /**
      * Public attributes constants
      */
@@ -62,7 +64,7 @@ class Actor extends Model
             'actor_movie',
             'movie_id',
             'actor_id',
-        );
+        )->withPivot('year');
     }
 
     public function getMovies(): Collection

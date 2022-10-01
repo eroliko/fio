@@ -22,6 +22,14 @@ final class MovieRepository implements MovieRepositoryInterface
         return $movie;
     }
 
+    /** @inheritDoc */
+    public function getOrCreate(int $id, array $columns): Movie
+    {
+        /** @var Movie $movie */
+        $movie = $this->query()->getFirstOrCreate($id, $columns);
+        return $movie;
+    }
+
     public function getAll(): Collection
     {
         return $this->query()->getAll();

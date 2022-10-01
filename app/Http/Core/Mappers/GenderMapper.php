@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Core\Helpers;
+namespace App\Http\Core\Mappers;
 
 final class GenderMapper
 {

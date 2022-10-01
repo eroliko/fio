@@ -15,6 +15,9 @@ interface ActorRepositoryInterface
 
     public function getAll(): Collection;
 
+    /** @param array<mixed> $columns */
+    public function getOrCreate(int $id, array $columns): Actor;
+
     /** @param array<mixed> $data */
     public function create(array $data): Actor;
 

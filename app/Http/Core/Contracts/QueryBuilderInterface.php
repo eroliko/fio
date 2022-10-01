@@ -5,46 +5,31 @@ declare(strict_types=1);
 namespace App\Http\Core\Contracts;
 
 use App\Http\Core\Models\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 
 interface QueryBuilderInterface
 {
     /**
-     * @param int|string $id
-     * @return \App\Http\Core\Models\Model
+     * @throws ModelNotFoundException
      */
     public function getById(int | string $id): Model;
 
-    /**
-     * @param int[]|string[] $ids
-     * @return \Illuminate\Support\Collection
-     */
     public function findByIds(array $ids): Collection;
 
-    /**
-     * @param int[]|string[] $ids
-     * @return \Illuminate\Support\Collection
-     */
     public function getByIds(array $ids): Collection;
 
-    /**
-     * @return \App\Http\Core\Models\Model|null
-     */
     public function getFirst(): ?Model;
 
+    /** @param array<mixed> $columns */
+    public function getFirstOrCreate(int | string $id, array $columns): Model;
+
     /**
-     * @return \App\Http\Core\Models\Model
-     *
-     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     * @throws ModelNotFoundException
      */
     public function getFirstOrFail(): Model;
 
-    /**
-     * @param int|string $id
-     *
-     * @return \App\Http\Core\Models\Model|null
-     */
     public function findById(int | string $id): ?Model;
 
     /**
@@ -75,146 +60,39 @@ interface QueryBuilderInterface
      */
     public function countRows(): int;
 
-    /**
-     * Add a where clause on the primary key to the query.
-     *
-     * @param int|string|int[]|string[] $id
-     *
-     * @return $this
-     */
     public function wherePrimaryKey(array | int | string | Collection $id): self;
 
-    /**
-     * Add a where clause on the bigger primary key to the query.
-     *
-     * @param int $id
-     * @return $this
-     */
     public function wherePrimaryKeyGt(int $id): self;
 
-    /**
-     * Add a where clause on the bigger or equivalent primary key to the query.
-     *
-     * @param int $id
-     * @return $this
-     */
     public function wherePrimaryKeyGte(int $id): self;
 
-    /**
-     * Add a where clause on the smaller primary key to the query.
-     *
-     * @param int $id
-     * @return $this
-     */
     public function wherePrimaryKeyLt(int $id): self;
 
-    /**
-     * Add a where clause on the smaller or equivalent primary key to the query.
-     *
-     * @param int $id
-     * @return $this
-     */
     public function wherePrimaryKeyLte(int $id): self;
 
-    /**
-     * Add a where clause on the primary key to the query.
-     *
-     * @param int|string|int[]|string[] $id
-     *
-     * @return $this
-     */
     public function wherePrimaryKeyNot(array | int | string | Collection $id): self;
 
-    /**
-     * Process results by chunks of specified size.
-     *
-     * @param int $size
-     * @param callable $callback
-     *
-     * @return bool
-     */
     public function processChunks(int $size, callable $callback): bool;
 
-    /**
-     * Pluck keys.
-     *
-     * @return \Illuminate\Support\Collection
-     */
     public function pluckKeys(): Collection;
 
-    /**
-     * Set limit number of rows to fetch.
-     *
-     * @param int $limit
-     *
-     * @return $this
-     */
     public function setLimit(int $limit): self;
 
-    /**
-     * Set offset number of rows to fetch.
-     *
-     * @param int $offset
-     *
-     * @return $this
-     */
     public function setOffset(int $offset): self;
 
-    /**
-     * Get only specified column data.
-     *
-     * @param string $column
-     *
-     * @return \Illuminate\Support\Collection
-     */
     public function getOnly(string $column): Collection;
 
-    /**
-     * Get only primary keys.
-     *
-     * @return \Illuminate\Support\Collection
-     */
     public function getOnlyKeys(): Collection;
 
-    /**
-     * Ensure that query result will return no results.
-     *
-     * @return \App\Http\Core\Contracts\QueryBuilderInterface
-     */
     public function ensureNoResults(): self;
 
-    /**
-     * Get instance of relative model.
-     *
-     * @return \App\Http\Core\Models\Model
-     */
     public function getModelInstance(): Model;
 
-    /**
-     * Add a "group by" clause to the query.
-     *
-     * @param array<string|\Illuminate\Database\Query\Expression>|string|\Illuminate\Database\Query\Expression ...$groups
-     *
-     * @return $this
-     */
     public function groupBy(...$groups): self;
 
-    /**
-     * Get new query instance from current query.
-     *
-     * @return static
-     */
     public function newQueryClone(): self;
 
-    /**
-     * Get a base query builder instance.
-     *
-     * @return \Illuminate\Database\Query\Builder
-     */
     public function toBaseBuilder(): Builder;
 
-    /**
-     * @return static
-     */
     public function makeClone(): static;
 }

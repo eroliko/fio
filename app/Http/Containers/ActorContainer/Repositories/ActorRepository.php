@@ -22,6 +22,14 @@ final class ActorRepository implements ActorRepositoryInterface
         return $actor;
     }
 
+    /** @inheritDoc */
+    public function getOrCreate(int $id, array $columns): Actor
+    {
+        /** @var Actor $actor */
+        $actor = $this->query()->getFirstOrCreate($id, $columns);
+        return $actor;
+    }
+
     public function getAll(): Collection
     {
         return $this->query()->getAll();

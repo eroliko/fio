@@ -73,8 +73,16 @@ class QueryBuilder extends Builder implements QueryBuilderInterface
      */
     public function getById(int | string $id): Model
     {
-        /** @var \App\Http\Core\Models\Model $model */
+        /** @var Model $model */
         $model = $this->findOrFail($id);
+        return $model;
+    }
+
+    /** @inheritDoc */
+    public function getFirstOrCreate(int | string $id, array $columns): Model
+    {
+        /** @var Model $model */
+        $model = $this->findOrNew($id, $columns);
         return $model;
     }
 
@@ -99,7 +107,7 @@ class QueryBuilder extends Builder implements QueryBuilderInterface
      */
     public function getFirst(): ?Model
     {
-        /** @var \App\Http\Core\Models\Model|null $model */
+        /** @var Model|null $model */
         $model = $this->first();
         return $model;
     }
@@ -109,7 +117,7 @@ class QueryBuilder extends Builder implements QueryBuilderInterface
      */
     public function getFirstOrFail(): Model
     {
-        /** @var \App\Http\Core\Models\Model $model */
+        /** @var Model $model */
         $model = $this->firstOrFail();
         return $model;
     }
@@ -119,7 +127,7 @@ class QueryBuilder extends Builder implements QueryBuilderInterface
      */
     public function findById(int | string $id): ?Model
     {
-        /** @var \App\Http\Core\Models\Model|null $model */
+        /** @var Model|null $model */
         $model = $this->find($id);
         return $model;
     }
@@ -417,7 +425,7 @@ class QueryBuilder extends Builder implements QueryBuilderInterface
      */
     public function getModelInstance(): Model
     {
-        /** @var \App\Http\Core\Models\Model $model */
+        /** @var Model $model */
         $model = $this->getModel();
         return $model;
     }
@@ -480,7 +488,7 @@ class QueryBuilder extends Builder implements QueryBuilderInterface
         string $joinType = 'inner',
         ?\Closure $clause = null
     ): string {
-        /** @var \App\Http\Core\Models\Model $model */
+        /** @var Model $model */
         $model = $this->getModel();
         $table = $model->getRelationInstance($relation)->getRelated()->getTable();
 
@@ -505,7 +513,7 @@ class QueryBuilder extends Builder implements QueryBuilderInterface
         string $joinType = 'inner',
         ?\Closure $clause = null
     ): string {
-        /** @var \App\Http\Core\Models\Model $model */
+        /** @var Model $model */
         $model = $this->getModel();
         $relationInstance = $model->getRelationInstance($relation);
 
@@ -590,7 +598,7 @@ class QueryBuilder extends Builder implements QueryBuilderInterface
     /**
      * @inheritDoc
      * @param class-string[] $models
-     * @return \App\Http\Core\Models\Model[]
+     * @return Model[]
      * @throws \ReflectionException
      */
     protected function eagerLoadRelation(array $models, $name, \Closure $constraints): array

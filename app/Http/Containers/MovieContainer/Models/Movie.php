@@ -11,6 +11,8 @@ use Illuminate\Support\Collection;
 
 class Movie extends Model
 {
+    protected $table = 'movie';
+
     /**
      * Public attributes constants
      */
@@ -51,7 +53,7 @@ class Movie extends Model
             'actor_movie',
             'actor_id',
             'movie_id',
-        );
+        )->withPivot('year');
     }
 
     public function getActors(): Collection

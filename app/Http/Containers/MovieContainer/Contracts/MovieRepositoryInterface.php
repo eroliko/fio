@@ -13,6 +13,9 @@ interface MovieRepositoryInterface
     /** @throws ModelNotFoundException */
     public function get(int $id): Movie;
 
+    /** @param array<mixed> $columns */
+    public function getOrCreate(int $id, array $columns): Movie;
+
     public function getAll(): Collection;
 
     /** @param array<mixed> $data */

@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Http\Containers\MovieContainer\Contracts\MovieQueryInterface;
-use App\Http\Containers\MovieContainer\Contracts\MovieRepositoryInterface;
+use App\Http\Containers\MovieContainer\Contracts\ActorQueryInterface;
+use App\Http\Containers\MovieContainer\Contracts\ActorRepositoryInterface;
 use App\Http\Containers\MovieContainer\Queries\MovieQueryBuilder;
 use App\Http\Containers\MovieContainer\Repositories\MovieRepository;
 use Illuminate\Support\ServiceProvider;
@@ -18,12 +18,12 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(
-            MovieQueryInterface::class,
+            ActorQueryInterface::class,
             MovieQueryBuilder::class,
         );
 
         $this->app->bind(
-            MovieRepositoryInterface::class,
+            ActorRepositoryInterface::class,
             MovieRepository::class,
         );
     }

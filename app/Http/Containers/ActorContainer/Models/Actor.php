@@ -2,14 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Containers\MovieContainer\Models;
+namespace App\Http\Containers\ActorContainer\Models;
 
-use App\Http\Containers\ActorContainer\Models\Actor;
+use App\Http\Containers\CastTypeEnums\GeneralVarsCastEnums;
+use App\Http\Containers\MovieContainer\Models\Movie;
+use App\Http\Core\Helpers\GenderMapper;
 use App\Http\Core\Models\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Collection;
 
-class Movie extends Model
+class Actor extends Model
 {
     /**
      * Public attributes constants
@@ -17,6 +19,10 @@ class Movie extends Model
     public const ATTR_ID = 'id';
 
     public const ATTR_NAME = 'name';
+
+    public const ATTR_AGE = 'age';
+
+    public const ATTR_GENDER = 'gender';
 
     /**
      * Public limits
@@ -26,7 +32,7 @@ class Movie extends Model
     /**
      * Public relations
      */
-    public const RELATION_ACTORS = 'actors';
+    public const RELATION_MOVIES = 'movies';
 
     /**
      * The attributes that are mass assignable.
@@ -35,6 +41,8 @@ class Movie extends Model
      */
     protected $fillable = [
         self::ATTR_NAME,
+        self::ATTR_AGE,
+        self::ATTR_GENDER,
     ];
 
     /**
@@ -42,21 +50,24 @@ class Movie extends Model
      *
      * @var array
      */
-    protected $casts = [];
+    protected $casts = [
+        self::ATTR_AGE => GeneralVarsCastEnums::INT,
+        self::ATTR_GENDER => GeneralVarsCastEnums::INT,
+    ];
 
-    public function actors(): BelongsToMany
+    public function movies(): BelongsToMany
     {
         return $this->belongsToMany(
-            Actor::class,
+            Movie::class,
             'actor_movie',
-            'actor_id',
             'movie_id',
+            'actor_id',
         );
     }
 
-    public function getActors(): Collection
+    public function getMovies(): Collection
     {
-        return $this->getRelationValue(Actor::class);
+        return $this->getRelationValue(self::RELATION_MOVIES);
     }
 
     /**
@@ -72,5 +83,15 @@ class Movie extends Model
     public function getName(): string
     {
         return $this->getAttributeValue(self::ATTR_NAME);
+    }
+
+    public function getAge(): int
+    {
+        return $this->getAttributeValue(self::ATTR_AGE);
+    }
+
+    public function getGender(): string
+    {
+        return (new GenderMapper())->getGender($this->getAttributeValue(self::ATTR_GENDER));
     }
 }

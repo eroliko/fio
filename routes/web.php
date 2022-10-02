@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Containers\AwardContainer\Controllers\AwardController;
+use App\Http\Containers\PageContainer\Controllers\IndexPageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [IndexPageController::class, 'show'])
+    ->name('page-index')
+;
+
+Route::post('/awards', [AwardController::class, 'store'])
+    ->name('action-ward-store')
+;

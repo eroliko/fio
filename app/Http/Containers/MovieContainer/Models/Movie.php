@@ -51,14 +51,16 @@ class Movie extends Model
         return $this->belongsToMany(
             Actor::class,
             'actor_movie',
-            'actor_id',
             'movie_id',
-        )->withPivot('year');
+            'actor_id',
+        )->withPivot(['year', 'age']);
     }
 
+    /** @return Collection<Actor>
+     */
     public function getActors(): Collection
     {
-        return $this->getRelationValue(Actor::class);
+        return $this->getRelationValue(self::RELATION_ACTORS);
     }
 
     /**

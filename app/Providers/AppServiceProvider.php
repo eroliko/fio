@@ -10,6 +10,8 @@ use App\Http\Containers\MovieContainer\Contracts\MovieQueryInterface;
 use App\Http\Containers\MovieContainer\Contracts\MovieRepositoryInterface;
 use App\Http\Containers\MovieContainer\Queries\MovieQueryBuilder;
 use App\Http\Containers\MovieContainer\Repositories\MovieRepository;
+use App\Http\Containers\PaginationContainer\PaginationService;
+use App\Http\Core\Paginator\PaginatorDriver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -39,6 +41,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             ActorRepositoryInterface::class,
             ActorRepository::class,
+        );
+
+        $this->app->bind(
+            PaginatorDriver::class,
+            PaginationService::class,
         );
     }
 

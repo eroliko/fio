@@ -7,6 +7,7 @@ namespace App\Http\Containers\ActorContainer\Queries;
 use App\Http\Containers\ActorContainer\Contracts\ActorQueryInterface;
 use App\Http\Containers\ActorContainer\Models\Actor;
 use App\Http\Core\Queries\QueryBuilder;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 final class ActorQueryBuilder extends QueryBuilder implements ActorQueryInterface
 {
@@ -30,13 +31,17 @@ final class ActorQueryBuilder extends QueryBuilder implements ActorQueryInterfac
         return $this->where(Actor::ATTR_NAME, '=', $name);
     }
 
-    public function whereActorAge(int $age): ActorQueryInterface
-    {
-        return $this->where(Actor::ATTR_AGE, '=', $age);
-    }
-
     public function whereActorGender(int $gender): ActorQueryInterface
     {
         return $this->where(Actor::ATTR_GENDER, '=', $gender);
+    }
+
+    public function allSortedByYear(): ActorQueryInterface
+    {
+        return $this
+            ->with([Actor::RELATION_MOVIES => function (BelongsToMany $builder) {
+                $builder->orderBy('pivot_year');
+            }])
+        ;
     }
 }

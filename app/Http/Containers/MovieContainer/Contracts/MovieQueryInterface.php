@@ -11,4 +11,8 @@ interface MovieQueryInterface extends QueryBuilderInterface
     public function whereMovieId(int $id): self;
 
     public function whereMovieName(string $name): self;
+
+    public function allSortedByYear(): self;
+
+    public function sharedAwardsOrderByName(): self;
 }

@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::table('actor_movie', function(Blueprint $table) {
             $table->year('year');
+            $table->unsignedInteger('age');
         });
     }
 
@@ -26,7 +27,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('actor_movie', function(Blueprint $table) {
-            $table->dropColumn('order');
+            $table->dropColumn('year');
+            $table->dropColumn('age');
         });
     }
 };

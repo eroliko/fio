@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('actor', function (Blueprint $table) {
             $table->id();
             $table->string('name', 256);
-            $table->unsignedInteger('age');
             $table->unsignedInteger('gender');
             $table->timestamps();
         });

@@ -22,8 +22,6 @@ class Actor extends Model
 
     public const ATTR_NAME = 'name';
 
-    public const ATTR_AGE = 'age';
-
     public const ATTR_GENDER = 'gender';
 
     /**
@@ -43,7 +41,6 @@ class Actor extends Model
      */
     protected $fillable = [
         self::ATTR_NAME,
-        self::ATTR_AGE,
         self::ATTR_GENDER,
     ];
 
@@ -53,7 +50,6 @@ class Actor extends Model
      * @var array
      */
     protected $casts = [
-        self::ATTR_AGE => GeneralVarsCastEnums::INT,
         self::ATTR_GENDER => GeneralVarsCastEnums::INT,
     ];
 
@@ -62,9 +58,9 @@ class Actor extends Model
         return $this->belongsToMany(
             Movie::class,
             'actor_movie',
-            'movie_id',
             'actor_id',
-        )->withPivot('year');
+            'movie_id',
+        )->withPivot(['year', 'age']);
     }
 
     public function getMovies(): Collection
@@ -87,13 +83,13 @@ class Actor extends Model
         return $this->getAttributeValue(self::ATTR_NAME);
     }
 
-    public function getAge(): int
-    {
-        return $this->getAttributeValue(self::ATTR_AGE);
-    }
-
     public function getGender(): string
     {
         return (new GenderMapper())->getGender($this->getAttributeValue(self::ATTR_GENDER));
+    }
+
+    public function getRawGender(): int
+    {
+        return $this->getAttributeValue(self::ATTR_GENDER);
     }
 }

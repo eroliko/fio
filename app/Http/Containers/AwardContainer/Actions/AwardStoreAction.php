@@ -48,13 +48,15 @@ class AwardStoreAction extends Action
 
             /** @var ?Actor $actor */
             $actor = $this->actorRepository->query()->whereActorName($row[self::CSV_NAME])->getFirst();
+
+
             if ($actor === null) {
                 $actor = $this->actorRepository->create([
                     Actor::ATTR_GENDER => (int) $data[AwardRequestFilter::FIELD_GENDER],
                     Actor::ATTR_NAME => $row[self::CSV_NAME],
-                    Actor::ATTR_AGE => $row[self::CSV_AGE],
                 ]);
             }
+
 
             /** @var ?Movie $movie */
             $movie = $this->movieRepository->query()->whereMovieName($row[self::CSV_MOVIE])->getFirst();
@@ -64,7 +66,15 @@ class AwardStoreAction extends Action
                 ]);
             }
 
-            $actor->movies()->syncWithPivotValues($movie, ['year' => $row[self::CSV_YEAR]], false);
+            if (! $movie->actors()->wherePivot('actor_id', $actor->getKey())->exists()) {
+                $movie->actors()->attach(
+                    $actor,
+                    [
+                        'year' => $row[self::CSV_YEAR],
+                        'age' => $row[self::CSV_AGE],
+                    ]
+                );
+            }
         }
     }
 

@@ -12,7 +12,7 @@ interface ActorQueryInterface extends QueryBuilderInterface
 
     public function whereActorName(string $name): self;
 
-    public function whereActorAge(int $age): self;
-
     public function whereActorGender(int $gender): self;
+
+    public function allSortedByYear(): self;
 }
